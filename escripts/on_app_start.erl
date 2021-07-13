@@ -1,5 +1,8 @@
 -module(on_app_start).
 
+-export([main/1]).
+-export([interprete_modules/0]).
+
 main(_Args) ->
   io:format("~n"),
   interprete_modules().
