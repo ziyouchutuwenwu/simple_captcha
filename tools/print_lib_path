@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+import os
+
+
+def get_lib_rel_dir(project_path):
+    lib_base_dir = "_build/default/lib/"
+
+    lib_parent_path = project_path + lib_base_dir
+    relative_lib_dir_list = []
+    lib_dir_list = []
+    rebar_compile_dir = ".rebar3"
+    for root, sub_dirs, _ in os.walk(lib_parent_path):
+        if root == lib_parent_path:
+            if rebar_compile_dir in sub_dirs:
+                sub_dirs.remove(rebar_compile_dir)
+            lib_dir_list = sub_dirs.copy()
+    for lib_dir in lib_dir_list:
+        rel_lib_dir = lib_base_dir + lib_dir + "/ebin"
+        relative_lib_dir_list.append(rel_lib_dir)
+    return relative_lib_dir_list
+
+
+def print_with_relative_path(relative_lib_dir_list):
+    info = "相对路径，使用下面的\n"
+    for relative_lib_dir in relative_lib_dir_list:
+        info += "-pa %s " % relative_lib_dir
+    info += "\n"
+    print(info)
+
+
+def print_with_full_path(project_path, relative_lib_dir_list):
+    info = "绝对路径，使用下面的\n"
+    for relative_lib_dir in relative_lib_dir_list:
+        info += "-pa %s " % (project_path + relative_lib_dir)
+    info += "\n"
+    print(info)
+
+
+if __name__ == "__main__":
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    project_path = os.path.join(os.path.abspath(os.path.join(current_dir, "..")), "")
+
+    relative_lib_dir_list = get_lib_rel_dir(project_path)
+    if 0 == len(relative_lib_dir_list):
+        print("未发现三方库, 请先 ./compile.sh")
+        exit(-1)
+
+    print_with_relative_path(relative_lib_dir_list)
+    print_with_full_path(project_path, relative_lib_dir_list)

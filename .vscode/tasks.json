@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "debug_enhancer",
+      "type": "shell",
+      "command": "./tools/debug_enhancer"
+    },
+    {
+      "label": "print_lib_path",
+      "type": "shell",
+      "command": "./tools/print_lib_path"
+    }
+  ]
+}

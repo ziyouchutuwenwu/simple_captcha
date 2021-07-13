@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "name": "debug",
+      "type": "erlang",
+      "request": "launch",
+      "runinterminal": [
+        "rebar3",
+        "shell",
+        "--sname",
+        "debug@localhost",
+        "--setcookie",
+        "123456"
+      ],
+      "projectnode": "debug@localhost",
+      "cookie": "123456",
+      "timeout": 300,
+      "cwd": "${workspaceRoot}"
+    }
+  ]
+}
