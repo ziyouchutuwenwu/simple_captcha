@@ -3,7 +3,7 @@
 -export([create/0, check/2]).
 
 create() ->
-  CryptKey = mochihex:to_hex(crypto:rand_bytes(16)),
+  CryptKey = mochihex:to_hex(crypto:strong_rand_bytes(16)),
   Code = generate_rand(5),
 
   FileName = lists:flatmap(fun(Item) -> integer_to_list(Item) end, tuple_to_list(erlang:timestamp())),
