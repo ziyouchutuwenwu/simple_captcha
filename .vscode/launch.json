@@ -7,7 +7,7 @@
       "runinterminal": [
         "rebar3",
         "shell",
-        "--sname",
+        "--name",
         "debug@localhost",
         "--setcookie",
         "123456"
