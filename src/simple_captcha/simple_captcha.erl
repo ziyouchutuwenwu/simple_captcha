@@ -34,10 +34,20 @@ check(CryptKeyBitString, CodeBitString) ->
 
 
 %private
+%% ===== private =====
+
+%% 生成指定长度的验证码
 generate_rand(Length) ->
-  Now = erlang:timestamp(),
-  random:seed(element(1, Now), element(2, Now), element(3, Now)),
-  lists:foldl(fun(_I, Acc) -> [do_rand(0) | Acc] end, [], lists:seq(1, Length)).
+    %% 定义允许的字符集
+    AllowedChars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz",
+    Bytes = crypto:strong_rand_bytes(Length),
+    lists:map(
+      fun(B) ->
+          Index = (B rem length(AllowedChars)) + 1,
+          lists:nth(Index, AllowedChars)
+      end,
+      binary_to_list(Bytes)
+    ).
 
 do_rand(R) when R > 46, R < 58; R > 64, R < 91; R > 96 ->
   R;
