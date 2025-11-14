@@ -1,8 +1,6 @@
--module(simple_captcha_test).
+-module(simple_captcha_demo).
 
--compile(export_all).
-
--define(C_ACCEPTORS, 100).
+-export([start_web_server/0]).
 
 start_web_server()->
 
@@ -14,9 +12,9 @@ start_web_server()->
 	application:start(ranch),
 	application:start(cowboy),
 
-	Routes = route_helper:get_routes(),
+	Routes = route_helper:routes(),
 	Dispatch = cowboy_router:compile(Routes),
 	Port = 8080,
-	TransOpts = [{port, Port}],
-	ProtoOpts = [{env, [{dispatch, Dispatch}]}],
-	cowboy:start_http(http, ?C_ACCEPTORS, TransOpts, ProtoOpts).
+	TransOpts = #{socket_opts => [{port, Port}]},
+	ProtoOpts = #{env => #{dispatch => Dispatch}},
+	{ok, _} = cowboy:start_clear(http, TransOpts, ProtoOpts).
